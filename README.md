@@ -1,2 +1,2 @@
 # RangerArm CCHS 2024
-Our cool project test
+Our cool project
