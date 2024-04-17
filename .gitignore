@@ -1,0 +1,4 @@
+# ignore .vscode/c_cpp_properties.json as it has to be configed for each persons computer
+.vscode/c_cpp_properties.json
+build/
+.DS_store
