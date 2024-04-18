@@ -40,6 +40,7 @@ LiquidCrystal lcd(7, 8, 57, 58, 59, 60);  //Set name for the LCD object to "lcd"
 // Team A Variables/Constants. Names start with tA...
 int = tAlightpin = A2/D56;
 const int tArolePerMinute = 17;         // Adjustable range of 28BYJ-48 stepper is 0~17 rpm
+int tApos;
 //--------------------------------
 // Team B Variables/Constants. Names start with tB...
 const int tBpinServo = 9;
