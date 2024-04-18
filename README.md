@@ -916,7 +916,8 @@ Note that these functions are not the only code that must be developed. Code for
    1) Because this function is only executed during “setup”, it is  allowed to use up to 30 seconds of execution time. 
 <p>
 
-   2) This function should cause the arm’s horizontal platform to  rotate while monitoring the Photo Sensor (aka Photo Resistor). 3) A white LED in the platform may shine light through a “tunnel” to the photo sensor in the base. The Team has the option to either permanently power the LED, or it may be placed under software  control, with it’s brightness regulated via PWM (Team A’s spare I/O  on pin D9 may be used for this).
+   2) This function should cause the arm’s horizontal platform to  rotate while monitoring the Photo Sensor (aka Photo Resistor).
+   3) A white LED in the platform may shine light through a “tunnel” to the photo sensor in the base. The Team has the option to either permanently power the LED, or it may be placed under software  control, with it’s brightness regulated via PWM (Team A’s spare I/O  on pin D9 may be used for this).
    </td>
   </tr>
 </table>
