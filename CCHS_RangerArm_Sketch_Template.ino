@@ -1,3 +1,7 @@
+#include <LiquidCrystal.h>
+
+#include <Stepper.h>
+
 //--------------------------------
 // RangerArm
 // CCHS Basic Computer Electronics Class Project Spring 2024
@@ -26,8 +30,8 @@ Stepper myStepper(stepsPerRevolution, 2, 3, 4, 5);  //Set the name of the Steppe
 #include <Servo.h>
 Servo myservo;    //Set the name for the Servo Motor object to "myservo"
 // Ultrasonic Sensor Library For Team B
-#include "SR04.h"
-SR04 sr04 = SR04(63,12);  //Set the name for the sensor object to "sr04". Echo pin D63, Trigger pin D12
+// #include <HCSR04.h>
+// HCSR04 sr04 = hc(63,12);  //Set the name for the sensor object to "sr04". Echo pin D63, Trigger pin D12
 //--------------------------------
 // LCD Library For Team C
 #include <LiquidCrystal.h>
