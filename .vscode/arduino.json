@@ -1,6 +1,6 @@
 {
     "board": "arduino:avr:mega",
-    "port": "/dev/tty.usbmodem11101",
+    "port": "/dev/tty.usbmodem11301",
     "sketch": "CCHS_RangerArm_Sketch_Template.ino",
     "output": "./build"
 }
