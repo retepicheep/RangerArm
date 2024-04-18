@@ -1,24 +1,8 @@
 # CCHS RangerArm Engineering Specification – Spring 2024 
 
-# Pre install
+# Setup
 
-Run the following commands after installing `arduino-cli`.
-
-```
-arduino-cli lib install Stepper
-```
-```
-arduino-cli lib install Servo
-```
-```
-arduino-cli lib install LiquidCrystal
-```
-```
-arduino-cli lib install LedControl
-```
-```
-arduino-cli lib install HC-SR04
-```
+See this [file](https://github.com/retepicheep/RangerArm/blob/main/SETUP.md) for how to setup.
 
 ## REVISION HISTORY 
 
