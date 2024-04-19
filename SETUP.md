@@ -16,6 +16,8 @@ I think I am missing steps and might need to edit this doc in the futur stay pos
 
      2) Put the path to the arduino-cli minus the file name into the Arduino:Path field.
 
+     3) create a build folder in the RangerArm folder. *Note:* Do NOT put *anything* in the folder.
+
 ## 3) Download Libraries
 
     Run the scripts in your terminal.
