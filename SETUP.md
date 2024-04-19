@@ -4,7 +4,7 @@ I think I am missing steps and might need to edit this doc in the futur stay pos
 
 ## 1) Download the Arduino Extension and Arduino-CLI
 
-1) Download these Extensions: Arduino, c--c++ compiler.
+1) Download the arduino extension.
 
 2) Either Download the Arduino-CLI or use the bundled one. If you use the bundled one skip to the Download libraries step.
 
