@@ -2,7 +2,7 @@
 
 # Setup
 
-See this [file](https://github.com/retepicheep/RangerArm/blob/main/SETUP.md) for how to setup.
+See this [doc](https://github.com/retepicheep/RangerArm/blob/main/SETUP.md) for how to setup.
 
 ## REVISION HISTORY 
 
