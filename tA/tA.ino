@@ -71,7 +71,9 @@ void setup() {
   //--------------------------------
   //Team A setup code here
 
-} 
+  fcnCalibrateX()
+
+
   //*****************************************************************************
   //CALIBRATION
   //*****************************************************************************
@@ -85,6 +87,7 @@ void setup() {
 
   //--------------------------------
 
+}
 
 void loop() {
   // put your main code here, to run repeatedly:
@@ -143,14 +146,14 @@ void loop() {
 //--------------------------------
 // Team A's Functions
 // Function fcnCalibrateX
-void fcnCalibrateX(VALUE){
+void fcnCalibrateX(){
   //the light sensor needs the correct pins still
   //i need to figure out what the photo sensor should read.
   //Turn the led on if it isnt already
   bool calibrated = false;
   while (calibrated != true) {
     int lightreading = analogRead(tAlightpin);
-    if (lightreading == VALUE) {
+    if (lightreading == 100) {
       calibrated = true;
     } else {
       myStepper.step(2048);
