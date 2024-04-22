@@ -1,3 +1,4 @@
+
 //--------------------------------
 // RangerArm
 // CCHS Basic Computer Electronics Class Project Spring 2024
@@ -38,9 +39,10 @@ LiquidCrystal lcd(7, 8, 57, 58, 59, 60);  //Set name for the LCD object to "lcd"
 // GLOBAL VARIABLES AND CONSTANTS GO HERE (including hardware pin assignments)
 //--------------------------------
 // Team A Variables/Constants. Names start with tA...
-int = tAlightpin = A2/D56;
+int tAlightpin = A2;
 const int tArolePerMinute = 17;         // Adjustable range of 28BYJ-48 stepper is 0~17 rpm
 int tApos;
+int VALUE;
 //--------------------------------
 // Team B Variables/Constants. Names start with tB...
 const int tBpinServo = 9;
@@ -70,26 +72,26 @@ void setup() {
   //--------------------------------
   //Team A setup code here
 
-  
+} 
   //*****************************************************************************
   //CALIBRATION
   //*****************************************************************************
   
 
-  void fcnCalibrateX(){
-    //the light sensor needs the correct pins still
-    //i need to figure out what the photo sensor should read.
-    //Turn the led on if it isnt already
-    bool calibrated = false;
-    while (calibrated != true) {
-      int lightreading = analogRead(tAlightpin);
-      if (lightreading == VALUE) {
-        calibrated = true;
-      } else {
-        myStepper.step(2048);
-      }
+void fcnCalibrateX(){
+  //the light sensor needs the correct pins still
+  //i need to figure out what the photo sensor should read.
+  //Turn the led on if it isnt already
+  bool calibrated = false;
+  while (calibrated != true) {
+    int lightreading = analogRead(tAlightpin);
+    if (lightreading == VALUE) {
+      calibrated = true;
+    } else {
+      myStepper.step(2048);
     }
   }
+}
   //*****************************************************************************
   //*****************************************************************************
   
@@ -98,7 +100,7 @@ void setup() {
   //Team B setup code here
 
   //--------------------------------
-}
+
 
 void loop() {
   // put your main code here, to run repeatedly:
