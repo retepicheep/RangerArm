@@ -43,6 +43,7 @@ LiquidCrystal lcd(7, 8, 57, 58, 59, 60);  //Set name for the LCD object to "lcd"
 int tAlightpin = A2;
 const int tArolePerMinute = 17;         // Adjustable range of 28BYJ-48 stepper is 0~17 rpm
 int tApos;
+int currentDeg = -1;
 //--------------------------------
 // Team B Variables/Constants. Names start with tB...
 const int tBpinServo = 9;
@@ -73,7 +74,11 @@ void setup() {
   //Team A setup code here
   myStepper.setSpeed(rolePerMinute);
 
-  fcnCalibrateX();
+  fcnGotoX(50);
+
+  // fcnCalibrateX();
+
+
 
 
   //*****************************************************************************
@@ -157,6 +162,7 @@ void fcnCalibrateX(){
     int lightreading = analogRead(tAlightpin);
     if (lightreading == 100) {
       calibrated = true;
+      currentDeg = 0;
     } else {
       myStepper.step(2048);
     }
@@ -166,9 +172,9 @@ void fcnCalibrateX(){
 // Function fcnGotoX
 int fcnGotoX(int deg) {
 
-  int currentDeg = fcnReadX();
-  int moveDeg = deg - currentDeg;
+  int moveDeg = currentDeg + deg;
   myStepper.step(moveDeg);
+  currentDeg += moveDeg;
   int endDeg = fcnReadX();
   
   if (endDeg != deg) {
@@ -181,7 +187,7 @@ int fcnGotoX(int deg) {
 // Function fcnReadX
 int fcnReadX() {
 
-  return -1;
+  return currentDeg;
 
 }
 
