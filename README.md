@@ -4,6 +4,10 @@
 
 See this [doc](https://github.com/retepicheep/RangerArm/blob/main/SETUP.md) for how to setup.
 
+# Git Comiting
+
+see this [doc](https://github.com/retepicheep/RangerArm/blob/main/GITCOMITS.md) for recomendations on comiting branches to github.
+
 ## REVISION HISTORY 
 
 
