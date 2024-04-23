@@ -21,7 +21,8 @@
 // Stepper Motor Library For Team A
 #include <Stepper.h>
 const int stepsPerRevolution = 2048;  // change this to fit the number of steps per revolution
-Stepper myStepper(stepsPerRevolution, 2, 3, 4, 5);  //Set the name of the Stepper Motor object to "myStepper". Use pins D2-D5
+Stepper myStepper(stepsPerRevolution, 8, 9, 10, 11);  //Set the name of the Stepper Motor object to "myStepper". Use pins D2-D5
+const int rolePerMinute = 17;
 //--------------------------------
 // Servo Motor Library For Team B
 #include <Servo.h>
@@ -70,6 +71,7 @@ void setup() {
 
   //--------------------------------
   //Team A setup code here
+  myStepper.setSpeed(rolePerMinute);
 
   fcnCalibrateX();
 
@@ -162,7 +164,27 @@ void fcnCalibrateX(){
 }
 // Function fcnMoveX
 // Function fcnGotoX
+int fcnGotoX(int deg) {
+
+  int currentDeg = fcnReadX();
+  int moveDeg = deg - currentDeg;
+  myStepper.step(moveDeg);
+  int endDeg = fcnReadX();
+  
+  if (endDeg != deg) {
+    return false;
+  } else {
+    return endDeg;
+  }
+
+}
 // Function fcnReadX
+int fcnReadX() {
+
+  return -1;
+
+}
+
 // Function fcnReadPIR
 //--------------------------------
 // Team B's Functions
