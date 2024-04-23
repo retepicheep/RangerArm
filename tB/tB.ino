@@ -26,7 +26,7 @@ Stepper myStepper(stepsPerRevolution, 2, 3, 4, 5);  //Set the name of the Steppe
 #include <Servo.h>
 Servo myservo;    //Set the name for the Servo Motor object to "myservo"
 // Ultrasonic Sensor Library For Team B
-#include "SR04.h"
+#include <SR04.h>
 SR04 sr04 = SR04(63,12);  //Set the name for the sensor object to "sr04". Echo pin D63, Trigger pin D12
 //--------------------------------
 // LCD Library For Team C
@@ -42,6 +42,7 @@ const int tArolePerMinute = 17;         // Adjustable range of 28BYJ-48 stepper 
 //--------------------------------
 // Team B Variables/Constants. Names start with tB...
 const int tBpinServo = 9;
+int tAVerticalPos = 90
 //--------------------------------
 // Team C Variables/Constants. Names start with tC...
 
@@ -70,7 +71,8 @@ void setup() {
 
   //--------------------------------
   //Team B setup code here
-
+  Servo myservo;
+  myservo.write(90);
   //--------------------------------
 }
 
@@ -138,9 +140,32 @@ void loop() {
 //--------------------------------
 // Team B's Functions
 // Function fcnMoveY
+int fcnMoveY(int direction){
+  if (direction==1){
+    if (tAVerticalPos>0){
+      Servo myservo;
+      myservo.write(tAVerticalPos-15);
+      tAVerticalPos-=15;
+      delay(30);
+    }
+  }
+  else {if (direction==-1){
+    if (tAVerticalPos<180){
+      Servo myservo;
+      myservo.write(tAVerticalPos+15);
+      tAVerticalPos+=15;
+      delay(30);
+      }
+    }
+  }
+}
 // Function fcnGotoY
+int fcnGotoY()
 // Function fcnReadY
+int fcnReadY()
+  return (tAVerticalPos);
 // Function fcnReadDist
+int fcnReadDist()
 //--------------------------------
 // Team C's Functions
 // Function fcnDisplayXY
