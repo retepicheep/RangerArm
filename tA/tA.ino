@@ -21,7 +21,8 @@
 // Stepper Motor Library For Team A
 #include <Stepper.h>
 const int stepsPerRevolution = 2048;  // change this to fit the number of steps per revolution
-Stepper myStepper(stepsPerRevolution, 2, 3, 4, 5);  //Set the name of the Stepper Motor object to "myStepper". Use pins D2-D5
+/* DO NOT CHANGE ORDER OF PINS */ 
+Stepper myStepper(stepsPerRevolution, 2, 4, 3, 5);  //Set the name of the Stepper Motor object to "myStepper". Use pins D2-D5
 //--------------------------------
 // Servo Motor Library For Team B
 #include <Servo.h>
@@ -42,6 +43,9 @@ LiquidCrystal lcd(7, 8, 57, 58, 59, 60);  //Set name for the LCD object to "lcd"
 int tAlightpin = A2;
 const int tArolePerMinute = 17;         // Adjustable range of 28BYJ-48 stepper is 0~17 rpm
 int tApos;
+int tAcurrentDeg = 0;
+const int tAinputTeeth = 14;
+const int tAoutputTeeth = 40;
 //--------------------------------
 // Team B Variables/Constants. Names start with tB...
 const int tBpinServo = 9;
@@ -70,8 +74,12 @@ void setup() {
 
   //--------------------------------
   //Team A setup code here
+  myStepper.setSpeed(tArolePerMinute);
 
-  fcnCalibrateX();
+
+  // fcnCalibrateX();
+
+
 
 
   //*****************************************************************************
@@ -91,6 +99,10 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
+
+  fcnGotoX(45);
+  delay(500);
+
   // Time-based scheduler (Team T)
   switch (millis() & B11) {
     //--------------------------------
@@ -155,14 +167,43 @@ void fcnCalibrateX(){
     int lightreading = analogRead(tAlightpin);
     if (lightreading == 100) {
       calibrated = true;
+      tAcurrentDeg = 0;
     } else {
-      myStepper.step(2048);
+      myStepper.step(1000);
     }
   }
 }
 // Function fcnMoveX
 // Function fcnGotoX
+int fcnGotoX(int deg) {
+
+  // int endDeg;
+
+  int moveSteps = deg * (static_cast<float> (tAoutputTeeth) / tAinputTeeth) * (static_cast<float> (stepsPerRevolution) / 360);
+  Serial.print("deg: ");
+  Serial.println(deg);
+  Serial.print("move steps: ");
+  Serial.println(moveSteps);
+  // if (tAcurrentDeg + moveDeg < 270 || tAcurrentDeg + moveDeg > 0) {
+  myStepper.step(moveSteps);
+  tAcurrentDeg += moveSteps;
+  // endDeg = fcnReadX();
+  // } else {
+  //   myStepper.step(0);
+  //   tAcurrentDeg += 0;
+  //   endDeg = fcnReadX();
+  // }
+  
+  // return endDeg;
+
+}
 // Function fcnReadX
+int fcnReadX() {
+
+  return tAcurrentDeg;
+
+}
+
 // Function fcnReadPIR
 //--------------------------------
 // Team B's Functions
