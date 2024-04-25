@@ -44,7 +44,8 @@ const int tArolePerMinute = 17;         // Adjustable range of 28BYJ-48 stepper 
 const int tBpinServo = 9;
 int tBVerticalPos = 90;
 //Variable that defines the speed of the servo motor in milliseconds per 0.1 degree
-const int tAServoSpeed = 2.78;
+const int tBServoSpeed = 2.78;
+int tBUltraDist
 //--------------------------------
 // Team C Variables/Constants. Names start with tC...
 
@@ -149,7 +150,7 @@ int fcnMoveY(int direction, int degrees = 15) {
         Servo myservo;
         myservo.write(tBVerticalPos-0.1);
         tBVerticalPos-=0.1;
-        delay(tAServoSpeed);
+        delay(tBServoSpeed);
       }
     }
   }
@@ -159,14 +160,31 @@ int fcnMoveY(int direction, int degrees = 15) {
         Servo myservo;
         myservo.write(tBVerticalPos+0.1);
         tBVerticalPos+=0.1;
-        delay(tAServoSpeed);
+        delay(tBServoSpeed);
       }
     }
   }
 }
 // Function fcnGotoY
-int fcnGotoY() {
-
+int fcnGotoY(int position) {
+  if (position >= 0) {
+    if (position <= 180) {
+      for (int i = 0; i = abs((tBVerticalPos-position)*10); i++) {
+        if ((tBVerticalPos-position)>0) {
+          Servo myservo;
+          myservo.write(tBVerticalPos+0.1);
+          tBVerticalPos+=0.1;
+          delay(tBServoSpeed);
+        }
+        else if ((tBVerticalPos-position)<0) {
+          Servo myservo;
+          myservo.write(tBVerticalPos-0.1);
+          tBVerticalPos-=0.1;
+          delay(tBServoSpeed);
+        }
+      }
+    }
+  }
 }
 // Function fcnReadY
 int fcnReadY() {
@@ -174,7 +192,8 @@ int fcnReadY() {
 }
 // Function fcnReadDist
 int fcnReadDist() {
-
+  tBUltraDist=(sr04.distance()/2.54);
+  return (tBUltraDist);
 }
 //--------------------------------
 // Team C's Functions
