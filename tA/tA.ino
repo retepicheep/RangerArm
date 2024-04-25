@@ -43,7 +43,7 @@ LiquidCrystal lcd(7, 8, 57, 58, 59, 60);  //Set name for the LCD object to "lcd"
 int tAlightpin = A2;
 const int tArolePerMinute = 17;         // Adjustable range of 28BYJ-48 stepper is 0~17 rpm
 int tApos;
-int tAcurrentDeg = 0;
+int tAcurrentDeg = -1;
 const int tAinputTeeth = 14;
 const int tAoutputTeeth = 40;
 //--------------------------------
@@ -100,7 +100,7 @@ void setup() {
 void loop() {
   // put your main code here, to run repeatedly:
 
-  fcnGotoX(45);
+  fcnGotoX(-360);
   delay(500);
 
   // Time-based scheduler (Team T)
@@ -177,24 +177,28 @@ void fcnCalibrateX(){
 // Function fcnGotoX
 int fcnGotoX(int deg) {
 
-  // int endDeg;
+  int moveSteps;
 
-  int moveSteps = deg * (static_cast<float> (tAoutputTeeth) / tAinputTeeth) * (static_cast<float> (stepsPerRevolution) / 360);
-  Serial.print("deg: ");
-  Serial.println(deg);
-  Serial.print("move steps: ");
-  Serial.println(moveSteps);
-  // if (tAcurrentDeg + moveDeg < 270 || tAcurrentDeg + moveDeg > 0) {
+  if (tAcurrentDeg + deg <= 270){
+    int moveSteps = tAcurrentDeg + deg * (static_cast<float> (tAoutputTeeth) / tAinputTeeth) * (static_cast<float> (stepsPerRevolution) / 360);
+  } else {
+    int moveSteps = 0;
+    deg = 0;
+  }
+    
   myStepper.step(moveSteps);
-  tAcurrentDeg += moveSteps;
-  // endDeg = fcnReadX();
-  // } else {
-  //   myStepper.step(0);
-  //   tAcurrentDeg += 0;
-  //   endDeg = fcnReadX();
-  // }
+  if (tAcurrentDeg + deg < 0){
+    int fullRote = (tAcurrentDeg + deg)/360 + 360;
+    tAcurrentDeg = (tAcurrentDeg + deg) + fullRote;
+  } else if (tAcurrentDeg + deg > 360) {
+    int fullRote = (tAcurrentDeg + deg)/360;
+    tAcurrentDeg = (tAcurrentDeg + deg) - fullRote;
+  } else {
+    tAcurrentDeg = tAcurrentDeg;
+  }
   
-  // return endDeg;
+
+  return tAcurrentDeg;
 
 }
 // Function fcnReadX
