@@ -44,7 +44,7 @@ const int tArolePerMinute = 17;         // Adjustable range of 28BYJ-48 stepper 
 const int tBpinServo = 9;
 int tBVerticalPos = 90;
 //Variable that defines the speed of the servo motor in milliseconds per 0.1 degree
-const int tBServoSpeed = 2.78;
+const float tBServoSpeed = 2.78;
 int tBUltraDist
 //--------------------------------
 // Team C Variables/Constants. Names start with tC...
