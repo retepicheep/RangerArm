@@ -143,7 +143,7 @@ void loop() {
 //--------------------------------
 // Team B's Functions
 // Function fcnMoveY (direction 1 = up, and -1 = down)
-int fcnMoveY(int direction, int degrees = 15) {
+void fcnMoveY(int direction, int degrees = 15) {
   if (direction==1){
     for (int i = 0; i = degrees*10; i++) {
       if (tBVerticalPos>0) {
@@ -166,7 +166,7 @@ int fcnMoveY(int direction, int degrees = 15) {
   }
 }
 // Function fcnGotoY
-int fcnGotoY(int position) {
+void fcnGotoY(int position) {
   if (position >= 0) {
     if (position <= 180) {
       for (int i = 0; i = abs((tBVerticalPos-position)*10); i++) {
@@ -198,12 +198,21 @@ int fcnReadDist() {
 //--------------------------------
 // Team C's Functions
 // Function fcnDisplayXY
+int fncDisplayXY() {
+
+}
 // Function fcnDisplayDist
+int 
 // Function fcnDisplayPIR
+int 
 // Function fcnDisplaySectors
+int 
 // Function fcnFireOnOff
+int 
 // Function fcnBuzzerOnOff
+int 
 // Function fcnBuzzerBeep
+int 
 //--------------------------------
 // Team T's Functions
 // FUTURE (PHASE 2) FUNCTIONS
