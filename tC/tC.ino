@@ -214,7 +214,7 @@ int fcnDisplaySectors() {
 
 }
 // Function fcnFireOnOff
-int fcnFireOnOff() {
+void fcnFireOnOff() {
 
 }
 // Function fcnBuzzerOnOff
@@ -223,7 +223,7 @@ int fcnBuzzerOnOff() {
 }
 // Function fcnBuzzerBeep
 int fcnBuzzerBeep() {
-    
+
 }
 //--------------------------------
 // Team T's Functions
