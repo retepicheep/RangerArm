@@ -42,7 +42,7 @@ const int tArolePerMinute = 17;         // Adjustable range of 28BYJ-48 stepper 
 //--------------------------------
 // Team B Variables/Constants. Names start with tB...
 const int tBpinServo = 9;
-int tBVerticalPos = 90;
+float tBVerticalPos = 90;
 //Variable that defines the speed of the servo motor in milliseconds per 0.1 degree
 const float tBServoSpeed = 2.78;
 int tBUltraDist
@@ -143,7 +143,7 @@ void loop() {
 //--------------------------------
 // Team B's Functions
 // Function fcnMoveY (direction 1 = up, and -1 = down)
-void fcnMoveY(int direction, int degrees = 15) {
+float fcnMoveY(int direction, int degrees = 15) {
   if (direction==1){
     for (int i = 0; i = degrees*10; i++) {
       if (tBVerticalPos>0) {
@@ -153,6 +153,7 @@ void fcnMoveY(int direction, int degrees = 15) {
         delay(tBServoSpeed);
       }
     }
+    return (tBVerticalPos);
   }
   else if (direction==-1) {
     for (int i = 0; i = degrees*10; i++) {
@@ -163,10 +164,14 @@ void fcnMoveY(int direction, int degrees = 15) {
         delay(tBServoSpeed);
       }
     }
+    return (tBVerticalPos);
+  }
+  else {
+    return (-1);
   }
 }
 // Function fcnGotoY
-void fcnGotoY(int position) {
+float fcnGotoY(int position) {
   if (position >= 0) {
     if (position <= 180) {
       for (int i = 0; i = abs((tBVerticalPos-position)*10); i++) {
@@ -183,7 +188,14 @@ void fcnGotoY(int position) {
           delay(tBServoSpeed);
         }
       }
+      return (tBVerticalPos);
     }
+    else {
+      return (-1);
+    }
+  }
+  else {
+    return (-1);
   }
 }
 // Function fcnReadY
