@@ -198,21 +198,33 @@ int fcnReadDist() {
 //--------------------------------
 // Team C's Functions
 // Function fcnDisplayXY
-int fncDisplayXY() {
+int fcnDisplayXY() {
 
 }
 // Function fcnDisplayDist
-int 
+int fcnDisplayDist() {
+
+}
 // Function fcnDisplayPIR
-int 
+int fcnDisplayPIR() {
+
+}
 // Function fcnDisplaySectors
-int 
+int fcnDisplaySectors() {
+
+}
 // Function fcnFireOnOff
-int 
+int fcnFireOnOff() {
+
+}
 // Function fcnBuzzerOnOff
-int 
+int fcnBuzzerOnOff() {
+
+}
 // Function fcnBuzzerBeep
-int 
+int fcnBuzzerBeep() {
+    
+}
 //--------------------------------
 // Team T's Functions
 // FUTURE (PHASE 2) FUNCTIONS
