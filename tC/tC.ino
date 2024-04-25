@@ -26,7 +26,7 @@ Stepper myStepper(stepsPerRevolution, 2, 3, 4, 5);  //Set the name of the Steppe
 #include <Servo.h>
 Servo myservo;    //Set the name for the Servo Motor object to "myservo"
 // Ultrasonic Sensor Library For Team B
-#include "SR04.h"
+#include <SR04.h>
 SR04 sr04 = SR04(63,12);  //Set the name for the sensor object to "sr04". Echo pin D63, Trigger pin D12
 //--------------------------------
 // LCD Library For Team C
@@ -42,6 +42,10 @@ const int tArolePerMinute = 17;         // Adjustable range of 28BYJ-48 stepper 
 //--------------------------------
 // Team B Variables/Constants. Names start with tB...
 const int tBpinServo = 9;
+int tBVerticalPos = 90;
+//Variable that defines the speed of the servo motor in milliseconds per 0.1 degree
+const int tBServoSpeed = 2.78;
+int tBUltraDist
 //--------------------------------
 // Team C Variables/Constants. Names start with tC...
 
@@ -70,7 +74,8 @@ void setup() {
 
   //--------------------------------
   //Team B setup code here
-
+  Servo myservo;
+  myservo.write(90);
   //--------------------------------
 }
 
@@ -137,10 +142,59 @@ void loop() {
 // Function fcnReadPIR
 //--------------------------------
 // Team B's Functions
-// Function fcnMoveY
+// Function fcnMoveY (direction 1 = up, and -1 = down)
+int fcnMoveY(int direction, int degrees = 15) {
+  if (direction==1){
+    for (int i = 0; i = degrees*10; i++) {
+      if (tBVerticalPos>0) {
+        Servo myservo;
+        myservo.write(tBVerticalPos-0.1);
+        tBVerticalPos-=0.1;
+        delay(tBServoSpeed);
+      }
+    }
+  }
+  else if (direction==-1) {
+    for (int i = 0; i = degrees*10; i++) {
+      if (tBVerticalPos<180) {
+        Servo myservo;
+        myservo.write(tBVerticalPos+0.1);
+        tBVerticalPos+=0.1;
+        delay(tBServoSpeed);
+      }
+    }
+  }
+}
 // Function fcnGotoY
+int fcnGotoY(int position) {
+  if (position >= 0) {
+    if (position <= 180) {
+      for (int i = 0; i = abs((tBVerticalPos-position)*10); i++) {
+        if ((tBVerticalPos-position)>0) {
+          Servo myservo;
+          myservo.write(tBVerticalPos+0.1);
+          tBVerticalPos+=0.1;
+          delay(tBServoSpeed);
+        }
+        else if ((tBVerticalPos-position)<0) {
+          Servo myservo;
+          myservo.write(tBVerticalPos-0.1);
+          tBVerticalPos-=0.1;
+          delay(tBServoSpeed);
+        }
+      }
+    }
+  }
+}
 // Function fcnReadY
+int fcnReadY() {
+  return (tBVerticalPos);
+}
 // Function fcnReadDist
+int fcnReadDist() {
+  tBUltraDist=(sr04.distance()/2.54);
+  return (tBUltraDist);
+}
 //--------------------------------
 // Team C's Functions
 // Function fcnDisplayXY
