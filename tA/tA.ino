@@ -23,6 +23,7 @@
 const int stepsPerRevolution = 2048;  // change this to fit the number of steps per revolution
 /* DO NOT CHANGE ORDER OF PINS */ 
 Stepper myStepper(stepsPerRevolution, 2, 4, 3, 5);  //Set the name of the Stepper Motor object to "myStepper". Use pins D2-D5
+#include <list>
 //--------------------------------
 // Servo Motor Library For Team B
 #include <Servo.h>
@@ -40,12 +41,15 @@ LiquidCrystal lcd(7, 8, 57, 58, 59, 60);  //Set name for the LCD object to "lcd"
 // GLOBAL VARIABLES AND CONSTANTS GO HERE (including hardware pin assignments)
 //--------------------------------
 // Team A Variables/Constants. Names start with tA...
-int tAlightpin = A2;
+const int tAlightpin = A2;
 const int tArolePerMinute = 17;         // Adjustable range of 28BYJ-48 stepper is 0~17 rpm
-int tApos;
 int tAcurrentDeg = -1;
 const int tAinputTeeth = 14;
 const int tAoutputTeeth = 40;
+const int tAPIRNE = 14;
+const int tAPIRNW = 15;
+const int tAPIRSW = 16;
+const int tAPIRSE = 17;
 //--------------------------------
 // Team B Variables/Constants. Names start with tB...
 const int tBpinServo = 9;
@@ -209,6 +213,18 @@ int fcnReadX() {
 }
 
 // Function fcnReadPIR
+byte fcnReadPIR() {
+  // int ne = digitalRead(tAPIRNE);
+  // int nw = digitalRead(tAPIRNW);
+  // int sw = digitalRead(tAPIRSW);
+  // int se = digitalRead(tAPIRSE);
+
+  list<byte> quads{0, 0, 0, 0} 
+
+  for (byte quad: quads){
+    break;
+  }
+}
 //--------------------------------
 // Team B's Functions
 // Function fcnMoveY
