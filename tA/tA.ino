@@ -39,12 +39,15 @@ LiquidCrystal lcd(7, 8, 57, 58, 59, 60);  //Set name for the LCD object to "lcd"
 // GLOBAL VARIABLES AND CONSTANTS GO HERE (including hardware pin assignments)
 //--------------------------------
 // Team A Variables/Constants. Names start with tA...
-int tAlightpin = A2;
+const int tAlightpin = A2;
 const int tArolePerMinute = 17;         // Adjustable range of 28BYJ-48 stepper is 0~17 rpm
-int tApos;
-int tAcurrentDeg = -1;
+int tAcurrentDeg = 0;
 const int tAinputTeeth = 14;
 const int tAoutputTeeth = 40;
+const int tAPIRNE = 14;
+const int tAPIRNW = 15;
+const int tAPIRSW = 16;
+const int tAPIRSE = 17;
 //--------------------------------
 // Team B Variables/Constants. Names start with tB...
 const int tBpinServo = 9;
@@ -99,7 +102,7 @@ void setup() {
 void loop() {
   // put your main code here, to run repeatedly:
 
-  fcnGotoX(-360);
+  Serial.println(fcnGotoX(-1));
   delay(500);
 
   // Time-based scheduler (Team T)
@@ -206,9 +209,12 @@ int fcnGotoX(int deg) {
 
   if (tAcurrentDeg + deg <= 270){
     int moveSteps = tAcurrentDeg + deg * (static_cast<float> (tAoutputTeeth) / tAinputTeeth) * (static_cast<float> (stepsPerRevolution) / 360);
+    myStepper.step(moveSteps);
   } else {
     int moveSteps = 0;
     deg = 0;
+    myStepper.step(50);
+    myStepper.step(-50);
   }
     
   myStepper.step(moveSteps);
@@ -234,6 +240,18 @@ int fcnReadX() {
 }
 
 // Function fcnReadPIR
+byte fcnReadPIR() {
+  // int ne = digitalRead(tAPIRNE);
+  // int nw = digitalRead(tAPIRNW);
+  // int sw = digitalRead(tAPIRSW);
+  // int se = digitalRead(tAPIRSE);
+
+  byte quads[4] = {0, 0, 0, 0};
+
+  for (byte quad: quads){
+    break;
+  }
+}
 //--------------------------------
 // Team B's Functions
 // Function fcnMoveY
