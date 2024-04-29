@@ -1,4 +1,3 @@
-
 //--------------------------------
 // RangerArm
 // CCHS Basic Computer Electronics Class Project Spring 2024
@@ -158,22 +157,48 @@ void loop() {
 //--------------------------------
 // Team A's Functions
 // Function fcnCalibrateX
-void fcnCalibrateX(){
-  //the light sensor needs the correct pins still
-  //i need to figure out what the photo sensor should read.
+int fcnCalibrateX(){
+  //I still need to figure out what the photo sensor should read.
   //Turn the led on if it isnt already
   bool calibrated = false;
   while (calibrated != true) {
     int lightreading = analogRead(tAlightpin);
-    if (lightreading == 100) {
+    if (lightreading == 100) { //needs better value
       calibrated = true;
       tAcurrentDeg = 0;
     } else {
-      myStepper.step(1000);
+      myStepper.step(170);
     }
   }
+return calibrated;
+
 }
 // Function fcnMoveX
+int fcnMoveX(int moveValue) { //maybe it'll work
+    
+    if (moveValue > 0 && tAcurrentDeg + 15 <= 255) {
+    tAcurrentDeg += 15;
+    myStepper.step(170);
+    } else if (moveValue > 0 && tAcurrentDeg + 15 > 255 && tAcurrentDeg + 15 <= 270){
+    int ndeg = 270 - tAcurrentDeg;
+    int steps = ndeg * 5.6889;
+    myStepper.step(steps);
+    tAcurrentDeg = 270;
+    } else if (moveValue < 0 && tAcurrentDeg - 15 >= 105) {
+    tAcurrentDeg -= 15;
+    myStepper.step(-170);
+    } else if (moveValue < 0 && tAcurrentDeg - 15 < 105 && tAcurrentDeg - 15 >= 90){
+    int ndeg = 90 - tAcurrentDeg;
+    int steps = ndeg * 5.6889;
+    myStepper.step(steps);
+    tAcurrentDeg = 90;
+    }
+
+    return tAcurrentDeg;
+    
+}
+
+
 // Function fcnGotoX
 int fcnGotoX(int deg) {
 
