@@ -101,10 +101,10 @@ void loop() {
       // Team B main code goes here. Tasks to be preformed include the following:
       // Read joystick Y axis and use it to control Servo Motor motion.
       if ((analogRead(tBX_pin)-tABDeadzone)>0) {
-        fcnMoveY(1)
+        float fcnMoveY(1);
       }
       if ((analogRead(tBX_pin)+tABDeadzone)<0) {
-        fcnMoveY(-1)
+        float fcnMoveY(-1);
       }
       // Pass arm's vertical position to Team C in an inter-team global variable
       // Read Ultrasonic distance sensor and pass to Team C in an inter-team global variable
@@ -207,7 +207,7 @@ int fcnReadY() {
 }
 // Function fcnReadDist
 int fcnReadDist() {
-  tBCUltraDist=(sr04.distance()/2.54);
+  tBCUltraDist=(sr04.Distance()/2.54);
   return (tBCUltraDist);
 }
 //--------------------------------
