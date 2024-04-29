@@ -150,33 +150,34 @@ void loop() {
 //--------------------------------
 // Team B's Functions
 // Function fcnMoveY (direction 1 = up, and -1 = down)
-float fcnMoveY(int direction, int degrees = 15) {
+int fcnMoveY(int direction) {
+  int degrees = 15;
   if (direction==1){
     for (int i = 0; i = degrees*10; i++) {
-      if (tBCVerticalPos>0) {
+      if (tBCVerticalPos>0 && tBCVerticalPos<180) {
         myservo.write(tBCVerticalPos-0.1);
         tBCVerticalPos-=0.1;
         delay(tBServoSpeed);
       }
     }
-    return (tBCVerticalPos);
+    return int (tBCVerticalPos);
   }
   else if (direction==-1) {
     for (int i = 0; i = degrees*10; i++) {
-      if (tBCVerticalPos<180) {
+      if (tBCVerticalPos<180 && tBCVerticalPos>0) {
         myservo.write(tBCVerticalPos+0.1);
         tBCVerticalPos+=0.1;
         delay(tBServoSpeed);
       }
     }
-    return (tBCVerticalPos);
+    return int (tBCVerticalPos);
   }
   else {
     return (-1);
   }
 }
 // Function fcnGotoY
-float fcnGotoY(int position) {
+int fcnGotoY(int position) {
   if (position >= 0) {
     if (position <= 180) {
       for (int i = 0; i = abs((tBCVerticalPos-position)*10); i++) {
@@ -191,7 +192,7 @@ float fcnGotoY(int position) {
           delay(tBServoSpeed);
         }
       }
-      return (tBCVerticalPos);
+      return int (tBCVerticalPos);
     }
     else {
       return (-1);
@@ -207,7 +208,7 @@ int fcnReadY() {
 }
 // Function fcnReadDist
 int fcnReadDist() {
-  tBCUltraDist=(sr04.Distance()/2.54);
+  int tBCUltraDist=(float(sr04.Distance())/2.54);
   return (tBCUltraDist);
 }
 //--------------------------------
