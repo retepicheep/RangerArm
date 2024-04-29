@@ -23,7 +23,6 @@
 const int stepsPerRevolution = 2048;  // change this to fit the number of steps per revolution
 /* DO NOT CHANGE ORDER OF PINS */ 
 Stepper myStepper(stepsPerRevolution, 2, 4, 3, 5);  //Set the name of the Stepper Motor object to "myStepper". Use pins D2-D5
-#include <list>
 //--------------------------------
 // Servo Motor Library For Team B
 #include <Servo.h>
@@ -43,7 +42,7 @@ LiquidCrystal lcd(7, 8, 57, 58, 59, 60);  //Set name for the LCD object to "lcd"
 // Team A Variables/Constants. Names start with tA...
 const int tAlightpin = A2;
 const int tArolePerMinute = 17;         // Adjustable range of 28BYJ-48 stepper is 0~17 rpm
-int tAcurrentDeg = -1;
+int tAcurrentDeg = 0;
 const int tAinputTeeth = 14;
 const int tAoutputTeeth = 40;
 const int tAPIRNE = 14;
@@ -104,7 +103,7 @@ void setup() {
 void loop() {
   // put your main code here, to run repeatedly:
 
-  fcnGotoX(-360);
+  Serial.println(fcnGotoX(-1));
   delay(500);
 
   // Time-based scheduler (Team T)
@@ -185,9 +184,12 @@ int fcnGotoX(int deg) {
 
   if (tAcurrentDeg + deg <= 270){
     int moveSteps = tAcurrentDeg + deg * (static_cast<float> (tAoutputTeeth) / tAinputTeeth) * (static_cast<float> (stepsPerRevolution) / 360);
+    myStepper.step(moveSteps);
   } else {
     int moveSteps = 0;
     deg = 0;
+    myStepper.step(50);
+    myStepper.step(-50);
   }
     
   myStepper.step(moveSteps);
@@ -219,7 +221,7 @@ byte fcnReadPIR() {
   // int sw = digitalRead(tAPIRSW);
   // int se = digitalRead(tAPIRSE);
 
-  list<byte> quads{0, 0, 0, 0} 
+  byte quads[4] = {0, 0, 0, 0};
 
   for (byte quad: quads){
     break;
