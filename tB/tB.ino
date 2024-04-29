@@ -42,10 +42,9 @@ const int tArolePerMinute = 17;         // Adjustable range of 28BYJ-48 stepper 
 //--------------------------------
 // Team B Variables/Constants. Names start with tB...
 const int tBpinServo = 9;
-int tBVerticalPos = 90;
+const int tBX_pin = 55;
 //Variable that defines the speed of the servo motor in milliseconds per 0.1 degree
-const int tBServoSpeed = 2.78;
-int tBUltraDist
+const float tBServoSpeed = 2.78;
 //--------------------------------
 // Team C Variables/Constants. Names start with tC...
 
@@ -55,7 +54,9 @@ int tTschedulePhase = -1;
 long tTlastSecond = 0;    //Hold's millis() sample from previous second
 //--------------------------------
 // Inter-Team Varibles/Constants. Names start with "t" followed by the capital letters of the teams sharing the memory.
-
+float tBCVerticalPos = 90;
+int tBCUltraDist;
+int tABDeadzone = 30;
 //--------------------------------
 void setup() {
   // put your setup code here, to run once:
@@ -99,6 +100,12 @@ void loop() {
     if (tTschedulePhase != 1) {   // ensure the team code only gets one execution every 4 milliseconds
       // Team B main code goes here. Tasks to be preformed include the following:
       // Read joystick Y axis and use it to control Servo Motor motion.
+      if ((analogRead(tBX_pin)-tABDeadzone)>0) {
+        float fcnMoveY(1);
+      }
+      if ((analogRead(tBX_pin)+tABDeadzone)<0) {
+        float fcnMoveY(-1);
+      }
       // Pass arm's vertical position to Team C in an inter-team global variable
       // Read Ultrasonic distance sensor and pass to Team C in an inter-team global variable
       tTschedulePhase = 1;
@@ -143,57 +150,65 @@ void loop() {
 //--------------------------------
 // Team B's Functions
 // Function fcnMoveY (direction 1 = up, and -1 = down)
-void fcnMoveY(int direction, int degrees = 15) {
+float fcnMoveY(int direction, int degrees = 15) {
   if (direction==1){
     for (int i = 0; i = degrees*10; i++) {
-      if (tBVerticalPos>0) {
-        Servo myservo;
-        myservo.write(tBVerticalPos-0.1);
-        tBVerticalPos-=0.1;
+      if (tBCVerticalPos>0) {
+        myservo.write(tBCVerticalPos-0.1);
+        tBCVerticalPos-=0.1;
         delay(tBServoSpeed);
       }
     }
+    return (tBCVerticalPos);
   }
   else if (direction==-1) {
     for (int i = 0; i = degrees*10; i++) {
-      if (tBVerticalPos<180) {
-        Servo myservo;
-        myservo.write(tBVerticalPos+0.1);
-        tBVerticalPos+=0.1;
+      if (tBCVerticalPos<180) {
+        myservo.write(tBCVerticalPos+0.1);
+        tBCVerticalPos+=0.1;
         delay(tBServoSpeed);
       }
     }
+    return (tBCVerticalPos);
+  }
+  else {
+    return (-1);
   }
 }
 // Function fcnGotoY
-void fcnGotoY(int position) {
+float fcnGotoY(int position) {
   if (position >= 0) {
     if (position <= 180) {
-      for (int i = 0; i = abs((tBVerticalPos-position)*10); i++) {
-        if ((tBVerticalPos-position)>0) {
-          Servo myservo;
-          myservo.write(tBVerticalPos+0.1);
-          tBVerticalPos+=0.1;
+      for (int i = 0; i = abs((tBCVerticalPos-position)*10); i++) {
+        if ((tBCVerticalPos-position)>0) {
+          myservo.write(tBCVerticalPos+0.1);
+          tBCVerticalPos+=0.1;
           delay(tBServoSpeed);
         }
-        else if ((tBVerticalPos-position)<0) {
-          Servo myservo;
-          myservo.write(tBVerticalPos-0.1);
-          tBVerticalPos-=0.1;
+        else if ((tBCVerticalPos-position)<0) {
+          myservo.write(tBCVerticalPos-0.1);
+          tBCVerticalPos-=0.1;
           delay(tBServoSpeed);
         }
       }
+      return (tBCVerticalPos);
     }
+    else {
+      return (-1);
+    }
+  }
+  else {
+    return (-1);
   }
 }
 // Function fcnReadY
 int fcnReadY() {
-  return (tBVerticalPos);
+  return (tBCVerticalPos);
 }
 // Function fcnReadDist
 int fcnReadDist() {
-  tBUltraDist=(sr04.distance()/2.54);
-  return (tBUltraDist);
+  tBCUltraDist=(sr04.Distance()/2.54);
+  return (tBCUltraDist);
 }
 //--------------------------------
 // Team C's Functions
