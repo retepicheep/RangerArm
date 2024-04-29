@@ -214,14 +214,21 @@ int fcnReadDist() {
 //--------------------------------
 // Team C's Functions
 // Function fcnDisplayXY
-int fcnDisplayXY(float xPos, float yPos) {
-  if (xPos>=0 && xPos<)
-  lcd.setCursor(5, 0);
-  lcd.print("x");
-  lcd.setCursor(6, 0);
-  lcd.print()
-  lcd.setCursor(11, 0);
-  lcd.print();
+bool fcnDisplayXY(float xPos, float yPos) {
+  if (xPos>=0 && xPos<=359 && yPos>=0 && yPos<=180) {
+    lcd.setCursor(5, 0);
+    lcd.print("x");
+    lcd.setCursor(6, 0);
+    lcd.print()
+    lcd.setCursor(11, 0);
+    lcd.print("y");
+    lcd.setCursor(12, 0);
+    lcd.print();
+    return true;
+  }
+  else {
+    return false;
+  }
 }
 // Function fcnDisplayDist
 int fcnDisplayDist() {
