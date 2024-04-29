@@ -207,7 +207,7 @@ int fcnReadY() {
 }
 // Function fcnReadDist
 int fcnReadDist() {
-  tBCUltraDist=(sr04.distance()/2.54);
+  tBCUltraDist=(sr04.Distance()/2.54);
   return (tBCUltraDist);
 }
 //--------------------------------
