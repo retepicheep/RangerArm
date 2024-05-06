@@ -216,28 +216,30 @@ int fcnReadDist() {
 // Function fcnDisplayXY
 bool fcnDisplayXY(float xPos, float yPos) {
   if (xPos>=0 && xPos<=359 && yPos>=0 && yPos<=180) {
-    lcd.setCursor(5, 0);
+    lcd.setCursor(3, 0);
     lcd.print("x");
-    lcd.setCursor(6, 0);
+    lcd.setCursor(4, 0);
     if (xPos<10) {
       lcd.print(00);
-      lcd.setCursor(8, 0);
+      lcd.setCursor(6, 0);
     }
     else if (xPos<100) {
       lcd.print(0);
-      lcd.setCursor(7, 0);
+      lcd.setCursor(5, 0);
     }
     lcd.print(xPos);
-    lcd.setCursor(11, 0);
+    lcd.setCursor(7, 0);
+    lcd.print("d")
+    lcd.setCursor(9, 0);
     lcd.print("y");
-    lcd.setCursor(12, 0);
+    lcd.setCursor(10, 0);
     if (yPos<10) {
       lcd.print(00);
-      lcd.setCursor(14, 0);
+      lcd.setCursor(12, 0);
     }
     if (yPos<100) {
       lcd.print(0);
-      lcd.setCursor(13, 0);
+      lcd.setCursor(11, 0);
     }
     lcd.print(yPos);
     return true;
@@ -247,8 +249,10 @@ bool fcnDisplayXY(float xPos, float yPos) {
   }
 }
 // Function fcnDisplayDist
-int fcnDisplayDist() {
-
+bool fcnDisplayDist(int targetDist, int prevDist) {
+  if (targetDist>=0 && targetDist<=999 && prevDist>=0 && prevDist<=999) {
+    lcd.setCursor(3, 1)
+  }
 }
 // Function fcnDisplayPIR
 int fcnDisplayPIR() {
