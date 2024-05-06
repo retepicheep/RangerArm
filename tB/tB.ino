@@ -154,7 +154,7 @@ int fcnMoveY(int direction) {
   int degrees = 15;
   if (direction==1){
     for (int i = 0; i = degrees*10; i++) {
-      if (tBCVerticalPos>0 && tBCVerticalPos<180) {
+      if (tBCVerticalPos>0 && tBCVerticalPos<150) {
         myservo.write(tBCVerticalPos-0.1);
         tBCVerticalPos-=0.1;
         delay(tBServoSpeed);
@@ -164,7 +164,7 @@ int fcnMoveY(int direction) {
   }
   else if (direction==-1) {
     for (int i = 0; i = degrees*10; i++) {
-      if (tBCVerticalPos<180 && tBCVerticalPos>0) {
+      if (tBCVerticalPos<150 && tBCVerticalPos>0) {
         myservo.write(tBCVerticalPos+0.1);
         tBCVerticalPos+=0.1;
         delay(tBServoSpeed);
@@ -179,7 +179,7 @@ int fcnMoveY(int direction) {
 // Function fcnGotoY
 int fcnGotoY(int position) {
   if (position >= 0) {
-    if (position <= 180) {
+    if (position <= 150) {
       for (int i = 0; i = abs((tBCVerticalPos-position)*10); i++) {
         if ((tBCVerticalPos-position)>0) {
           myservo.write(tBCVerticalPos+0.1);

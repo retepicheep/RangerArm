@@ -154,7 +154,7 @@ int fcnMoveY(int direction) {
   int degrees = 15;
   if (direction==1){
     for (int i = 0; i = degrees*10; i++) {
-      if (tBCVerticalPos>0 && tBCVerticalPos<180) {
+      if (tBCVerticalPos>0 && tBCVerticalPos<150) {
         myservo.write(tBCVerticalPos-0.1);
         tBCVerticalPos-=0.1;
         delay(tBServoSpeed);
@@ -164,7 +164,7 @@ int fcnMoveY(int direction) {
   }
   else if (direction==-1) {
     for (int i = 0; i = degrees*10; i++) {
-      if (tBCVerticalPos<180 && tBCVerticalPos>0) {
+      if (tBCVerticalPos<150 && tBCVerticalPos>0) {
         myservo.write(tBCVerticalPos+0.1);
         tBCVerticalPos+=0.1;
         delay(tBServoSpeed);
@@ -179,7 +179,7 @@ int fcnMoveY(int direction) {
 // Function fcnGotoY
 int fcnGotoY(int position) {
   if (position >= 0) {
-    if (position <= 180) {
+    if (position <= 150) {
       for (int i = 0; i = abs((tBCVerticalPos-position)*10); i++) {
         if ((tBCVerticalPos-position)>0) {
           myservo.write(tBCVerticalPos+0.1);
@@ -215,7 +215,7 @@ int fcnReadDist() {
 // Team C's Functions
 // Function fcnDisplayXY
 bool fcnDisplayXY(float xPos, float yPos) {
-  if (xPos>=0 && xPos<=359 && yPos>=0 && yPos<=180) {
+  if (xPos>=0 && xPos<=359 && yPos>=0 && yPos<=150) {
     lcd.setCursor(3, 0);
     lcd.print("x");
     lcd.setCursor(4, 0);
@@ -252,6 +252,7 @@ bool fcnDisplayXY(float xPos, float yPos) {
 bool fcnDisplayDist(int targetDist, int prevDist) {
   if (targetDist>=0 && targetDist<=999 && prevDist>=0 && prevDist<=999) {
     lcd.setCursor(3, 1)
+    if ()
   }
 }
 // Function fcnDisplayPIR
