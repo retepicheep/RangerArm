@@ -41,7 +41,7 @@ LiquidCrystal lcd(7, 8, 57, 58, 59, 60);  //Set name for the LCD object to "lcd"
 // Team A Variables/Constants. Names start with tA...
 const int tAlightpin = A2;
 const int tArolePerMinute = 17;         // Adjustable range of 28BYJ-48 stepper is 0~17 rpm
-int tAcurrentDeg = 0;
+int tAcurrentDeg = -1;
 const int tAinputTeeth = 14;
 const int tAoutputTeeth = 40;
 const int tAPIRNE = 14;
@@ -76,10 +76,12 @@ void setup() {
 
   //--------------------------------
   //Team A setup code here
+  myStepper.setSpeed(1);
+
+
+  fcnCalibrateX();
+
   myStepper.setSpeed(tArolePerMinute);
-
-
-  // fcnCalibrateX();
 
 
 
@@ -102,7 +104,10 @@ void setup() {
 void loop() {
   // put your main code here, to run repeatedly:
 
-  Serial.println(fcnGotoX(-1));
+  // fcnMoveX(2);
+  // delay(500);
+
+  Serial.println(fcnGotoX(45));
   delay(500);
 
   // Time-based scheduler (Team T)
@@ -166,11 +171,12 @@ int fcnCalibrateX(){
   bool calibrated = false;
   while (calibrated != true) {
     int lightreading = analogRead(tAlightpin);
-    if (lightreading == 100) { //needs better value
+    Serial.println(lightreading);
+    if (lightreading > 415) { //needs better value
       calibrated = true;
       tAcurrentDeg = 0;
     } else {
-      myStepper.step(170);
+      myStepper.step(10);
     }
   }
 return calibrated;
@@ -203,21 +209,29 @@ int fcnMoveX(int moveValue) { //maybe it'll work
 
 
 // Function fcnGotoX
-int fcnGotoX(int deg) {
+int fcnGotoX(int inDeg) {
 
+  int deg = tAcurrentDeg - inDeg;
   int moveSteps;
 
-  if (tAcurrentDeg + deg <= 270){
-    int moveSteps = tAcurrentDeg + deg * (static_cast<float> (tAoutputTeeth) / tAinputTeeth) * (static_cast<float> (stepsPerRevolution) / 360);
-    myStepper.step(moveSteps);
-  } else {
-    int moveSteps = 0;
-    deg = 0;
-    myStepper.step(50);
-    myStepper.step(-50);
+  if (tAcurrentDeg != -1) {
+    if (tAcurrentDeg + deg <= 270){
+      int moveSteps = tAcurrentDeg + deg * (static_cast<float> (tAoutputTeeth) / tAinputTeeth) * (static_cast<float> (stepsPerRevolution) / 360);
+      myStepper.step(moveSteps);
+    } else {
+      int moveSteps = 0;
+      deg = 0;
+      myStepper.step(50);
+      myStepper.step(-50);
+    }
   }
-    
-  myStepper.step(moveSteps);
+
+  return tAfcnRecalibrateX(deg);  
+}
+
+// Function tAfcnRecalibrateX
+int tAfcnRecalibrateX (int deg) {
+
   if (tAcurrentDeg + deg < 0){
     int fullRote = (tAcurrentDeg + deg)/360 + 360;
     tAcurrentDeg = (tAcurrentDeg + deg) + fullRote;
@@ -227,11 +241,11 @@ int fcnGotoX(int deg) {
   } else {
     tAcurrentDeg = tAcurrentDeg;
   }
-  
 
   return tAcurrentDeg;
 
 }
+
 // Function fcnReadX
 int fcnReadX() {
 
