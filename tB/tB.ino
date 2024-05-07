@@ -41,8 +41,8 @@ LiquidCrystal lcd(7, 8, 57, 58, 59, 60);  //Set name for the LCD object to "lcd"
 const int tArolePerMinute = 17;         // Adjustable range of 28BYJ-48 stepper is 0~17 rpm
 //--------------------------------
 // Team B Variables/Constants. Names start with tB...
-const int tBpinServo = 9;
-const int tBX_pin = A1;
+const int tBpinServo = 6;
+const int tBY_pin = A1;
 //Variable that defines the speed of the servo motor in milliseconds per 0.1 degree
 const float tBServoSpeed = 2.78;
 //--------------------------------
@@ -76,7 +76,7 @@ void setup() {
   //--------------------------------
   //Team B setup code here
   Servo myservo;
-  myservo.write(90);
+  fcnGotoY(90);
   //--------------------------------
 }
 
@@ -100,10 +100,11 @@ void loop() {
     if (tTschedulePhase != 1) {   // ensure the team code only gets one execution every 4 milliseconds
       // Team B main code goes here. Tasks to be preformed include the following:
       // Read joystick Y axis and use it to control Servo Motor motion.
-      if ((analogRead(tBX_pin)-tABDeadzone)>0) {
+      if ((analogRead(tBY_pin)-tABDeadzone)<512) {
+        Serial.print(1);
         float fcnMoveY(1);
       }
-      if ((analogRead(tBX_pin)+tABDeadzone)<0) {
+      if ((analogRead(tBY_pin)+tABDeadzone)>512) {
         float fcnMoveY(-1);
       }
       // Pass arm's vertical position to Team C in an inter-team global variable
