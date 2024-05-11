@@ -109,7 +109,9 @@ void loop() {
         float fcnMoveY(-1);
       }
       // Pass arm's vertical position to Team C in an inter-team global variable
+      int fcnReadY();
       // Read Ultrasonic distance sensor and pass to Team C in an inter-team global variable
+      int fcnReadDist();
       tTschedulePhase = 1;
     }
     break;
