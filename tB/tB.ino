@@ -43,8 +43,8 @@ const int tArolePerMinute = 17;         // Adjustable range of 28BYJ-48 stepper 
 // Team B Variables/Constants. Names start with tB...
 const int tBpinServo = 6;
 const int tBY_pin = A1;
-//Variable that defines the speed of the servo motor in milliseconds per 0.1 degree
-const float tBServoSpeed = 2.78;
+//Variable that defines the speed of the servo motor in milliseconds per degree
+const float tBServoSpeed = 27.8;
 //--------------------------------
 // Team C Variables/Constants. Names start with tC...
 
@@ -105,6 +105,7 @@ void loop() {
         float fcnMoveY(1);
       }
       if ((analogRead(tBY_pin)+tABDeadzone)>512) {
+        Serial.print(-1);
         float fcnMoveY(-1);
       }
       // Pass arm's vertical position to Team C in an inter-team global variable
@@ -153,21 +154,21 @@ void loop() {
 // Function fcnMoveY (direction 1 = up, and -1 = down)
 int fcnMoveY(int direction) {
   int degrees = 15;
-  if (direction==1){
-    for (int i = 0; i = degrees*10; i++) {
-      if (tBCVerticalPos>0 && tBCVerticalPos<150) {
-        myservo.write(tBCVerticalPos-0.1);
-        tBCVerticalPos-=0.1;
+  if (direction==-1){
+    for (int i = 0; i = degrees; i++) {
+      if (tBCVerticalPos>76 && tBCVerticalPos<180) {
+        myservo.write(tBCVerticalPos-1);
+        tBCVerticalPos-=1;
         delay(tBServoSpeed);
       }
     }
     return int (tBCVerticalPos);
   }
-  else if (direction==-1) {
-    for (int i = 0; i = degrees*10; i++) {
-      if (tBCVerticalPos<150 && tBCVerticalPos>0) {
-        myservo.write(tBCVerticalPos+0.1);
-        tBCVerticalPos+=0.1;
+  else if (direction==1) {
+    for (int i = 0; i = degrees; i++) {
+      if (tBCVerticalPos<180 && tBCVerticalPos>76) {
+        myservo.write(tBCVerticalPos+1);
+        tBCVerticalPos+=1;
         delay(tBServoSpeed);
       }
     }
@@ -179,17 +180,17 @@ int fcnMoveY(int direction) {
 }
 // Function fcnGotoY
 int fcnGotoY(int position) {
-  if (position >= 0) {
-    if (position <= 150) {
-      for (int i = 0; i = abs((tBCVerticalPos-position)*10); i++) {
+  if (position >= 76) {
+    if (position <= 180) {
+      for (int i = 0; i = abs((tBCVerticalPos-position)); i++) {
         if ((tBCVerticalPos-position)>0) {
-          myservo.write(tBCVerticalPos+0.1);
-          tBCVerticalPos+=0.1;
+          myservo.write(tBCVerticalPos-1);
+          tBCVerticalPos-=1;
           delay(tBServoSpeed);
         }
         else if ((tBCVerticalPos-position)<0) {
-          myservo.write(tBCVerticalPos-0.1);
-          tBCVerticalPos-=0.1;
+          myservo.write(tBCVerticalPos+1);
+          tBCVerticalPos+=1;
           delay(tBServoSpeed);
         }
       }
