@@ -39,7 +39,7 @@ LiquidCrystal lcd(7, 8, 57, 58, 59, 60);  //Set name for the LCD object to "lcd"
 // GLOBAL VARIABLES AND CONSTANTS GO HERE (including hardware pin assignments)
 //--------------------------------
 // Team A Variables/Constants. Names start with tA...
-const int tAlightpin = A2;
+int tAlightPin = A3;
 const int tArolePerMinute = 17;         // Adjustable range of 28BYJ-48 stepper is 0~17 rpm
 int tAcurrentDeg = -1;
 const int tAinputTeeth = 14;
@@ -68,7 +68,8 @@ void setup() {
   lcd.begin(16, 2);                     // For LCD Library, set LCD size
   myservo.attach(tBpinServo);           // For Servo Library, identify PWM signal pin
   myStepper.setSpeed(tArolePerMinute);  // For Stepper Motor Library, set rotation speed
-  Serial.begin(38400);                  // For Serial Monitor (debugging tool) using 38,400 baud
+  Serial.begin(38400);
+  pinMode(tAlightPin, INPUT_PULLUP);                // For Serial Monitor (debugging tool) using 38,400 baud
   //--------------------------------
   //BE SURE TO INITIALIZE DIGITAL I/O PINS and ANALOG INPUT PINS IN THIS SECTION
   //--------------------------------
@@ -76,12 +77,13 @@ void setup() {
 
   //--------------------------------
   //Team A setup code here
-  myStepper.setSpeed(1);
+  // myStepper.setSpeed(2040);
 
 
   fcnCalibrateX();
 
   myStepper.setSpeed(tArolePerMinute);
+  pinMode(50, OUTPUT);
 
 
 
@@ -107,8 +109,12 @@ void loop() {
   // fcnMoveX(2);
   // delay(500);
 
-  Serial.println(fcnGotoX(45));
-  delay(500);
+  // Serial.println(fcnGotoX(45));
+  // delay(500);
+
+  // Serial.println(fcnReadPIR());
+  // digitalWrite(50, HIGH);
+  
 
   // Time-based scheduler (Team T)
   switch (millis() & B11) {
@@ -170,13 +176,13 @@ int fcnCalibrateX(){
   //Turn the led on if it isnt already
   bool calibrated = false;
   while (calibrated != true) {
-    int lightreading = analogRead(tAlightpin);
+    int lightreading = analogRead(tAlightPin);
     Serial.println(lightreading);
-    if (lightreading > 415) { //needs better value
+    if (lightreading <= 145) { //needs better value
       calibrated = true;
       tAcurrentDeg = 0;
     } else {
-      myStepper.step(10);
+      myStepper.step(1);
     }
   }
 return calibrated;
@@ -255,16 +261,30 @@ int fcnReadX() {
 
 // Function fcnReadPIR
 byte fcnReadPIR() {
-  // int ne = digitalRead(tAPIRNE);
-  // int nw = digitalRead(tAPIRNW);
-  // int sw = digitalRead(tAPIRSW);
-  // int se = digitalRead(tAPIRSE);
+  byte data = 0;
+  int ne = digitalRead(tAPIRNE);
+  int nw = digitalRead(tAPIRNW);
+  int sw = digitalRead(tAPIRSW);
+  int se = digitalRead(tAPIRSE);
 
-  byte quads[4] = {0, 0, 0, 0};
-
-  for (byte quad: quads){
-    break;
+  if (ne == HIGH) {
+    data += 2;
   }
+
+  if (nw == HIGH) {
+    data += 4;
+  }
+  
+  if (sw == HIGH) {
+    data += 8;
+  }
+  
+  if (se == HIGH) {
+    data += 16;
+  }
+
+  return data;
+
 }
 //--------------------------------
 // Team B's Functions
