@@ -188,25 +188,42 @@ int fcnCalibrateX(){
 return calibrated;
 
 }
+void tAfcnserialdebug(int deg, int time){
+  if (time == 1){
+    Serial.println("Current X Position:");
+    Serial.println(deg);
+  } else if (time == 0){
+    Serial.println("New X Position:");
+    Serial.println(deg);
+  }
+}
+
 // Function fcnMoveX
-int fcnMoveX(int moveValue) { //maybe it'll work
-    
-    if (moveValue > 0 && tAcurrentDeg + 15 <= 255) {
+int fcnMoveX(int moveValue) { //should work
+    if (moveValue > 0 && tAcurrentDeg + 15 <= 90) { // if the movemem=nt is clockwise and within the bounds
+    tAfcnserialdebug(tAcurrentDeg, 1);
     tAcurrentDeg += 15;
     myStepper.step(170);
-    } else if (moveValue > 0 && tAcurrentDeg + 15 > 255 && tAcurrentDeg + 15 <= 270){
-    int ndeg = 270 - tAcurrentDeg;
-    int steps = ndeg * 5.6889;
-    myStepper.step(steps);
-    tAcurrentDeg = 270;
-    } else if (moveValue < 0 && tAcurrentDeg - 15 >= 105) {
-    tAcurrentDeg -= 15;
-    myStepper.step(-170);
-    } else if (moveValue < 0 && tAcurrentDeg - 15 < 105 && tAcurrentDeg - 15 >= 90){
+    tAfcnserialdebug(tAcurrentDeg, 0);
+    } else if (moveValue > 0 && tAcurrentDeg + 15 > 90){ // if the movement is clockwise and goes outside the bounds
+    tAfcnserialdebug(tAcurrentDeg, 1);
     int ndeg = 90 - tAcurrentDeg;
     int steps = ndeg * 5.6889;
     myStepper.step(steps);
     tAcurrentDeg = 90;
+    tAfcnserialdebug(tAcurrentDeg, 0);
+    } else if (moveValue < 0 && tAcurrentDeg - 15 >= -90) { // if the movement is counterclockwise and within the bounds
+    tAfcnserialdebug(tAcurrentDeg, 1);
+    tAcurrentDeg -= 15;
+    myStepper.step(-170);
+    tAfcnserialdebug(tAcurrentDeg, 0);
+    } else if (moveValue < 0 && tAcurrentDeg - 15 < -90){ // if the movement is counterclockwise and goes outside the bounds
+    tAfcnserialdebug(tAcurrentDeg, 1);
+    int ndeg = -90 + tAcurrentDeg;
+    int steps = ndeg * 5.6889;
+    myStepper.step(steps);
+    tAcurrentDeg = -90;
+    tAfcnserialdebug(tAcurrentDeg, 0);
     }
 
     return tAcurrentDeg;
