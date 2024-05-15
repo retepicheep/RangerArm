@@ -39,9 +39,10 @@ LiquidCrystal lcd(7, 8, 57, 58, 59, 60);  //Set name for the LCD object to "lcd"
 // GLOBAL VARIABLES AND CONSTANTS GO HERE (including hardware pin assignments)
 //--------------------------------
 // Team A Variables/Constants. Names start with tA...
-int tAlightPin = A3;
+const int tAjoystickX = A0;
+const int tAlightPin = A2;
 const int tArolePerMinute = 17;         // Adjustable range of 28BYJ-48 stepper is 0~17 rpm
-int tAcurrentDeg = -1;
+int tACcurrentDeg = -1;
 const int tAinputTeeth = 14;
 const int tAoutputTeeth = 40;
 const int tAPIRNE = 14;
@@ -68,6 +69,7 @@ void setup() {
   lcd.begin(16, 2);                     // For LCD Library, set LCD size
   myservo.attach(tBpinServo);           // For Servo Library, identify PWM signal pin
   myStepper.setSpeed(tArolePerMinute);  // For Stepper Motor Library, set rotation speed
+  pinMode(tAjoystickX, INPUT);
   Serial.begin(38400);
   pinMode(tAlightPin, INPUT_PULLUP);                // For Serial Monitor (debugging tool) using 38,400 baud
   //--------------------------------
@@ -123,6 +125,8 @@ void loop() {
     if (tTschedulePhase != 0) {   // ensure the team code only gets one execution every 4 milliseconds
       // Team A main code goes here. Tasks to be preformed include the following:
       // Read joystick X axis and use it to control Stepper Motor motion. 
+      int tAxPos = analogRead(tAjoystickX);
+      
       // Pass arm's horizontal position to Team C in an inter-team global variable
       // Read PIR sensors and pass to Team C in an inter-team global variable
       // DEBUG
