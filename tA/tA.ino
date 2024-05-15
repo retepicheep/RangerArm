@@ -42,6 +42,7 @@ LiquidCrystal lcd(7, 8, 57, 58, 59, 60);  //Set name for the LCD object to "lcd"
 const int tAjoystickX = A0;
 const int tAlightPin = A2;
 const int tArolePerMinute = 17;         // Adjustable range of 28BYJ-48 stepper is 0~17 rpm
+int tACdata = 0;
 int tACcurrentDeg = -1;
 const int tAinputTeeth = 14;
 const int tAoutputTeeth = 40;
@@ -282,29 +283,28 @@ int fcnReadX() {
 
 // Function fcnReadPIR
 byte fcnReadPIR() {
-  byte data = 0;
   int ne = digitalRead(tAPIRNE);
   int nw = digitalRead(tAPIRNW);
   int sw = digitalRead(tAPIRSW);
   int se = digitalRead(tAPIRSE);
 
   if (ne == HIGH) {
-    data += 2;
+    tACdata += 2;
   }
 
   if (nw == HIGH) {
-    data += 4;
+    tACdata += 4;
   }
   
   if (sw == HIGH) {
-    data += 8;
+    tACdata += 8;
   }
   
   if (se == HIGH) {
-    data += 16;
+    tACdata += 16;
   }
 
-  return data;
+  return tACdata;
 
 }
 //--------------------------------
