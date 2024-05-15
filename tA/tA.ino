@@ -184,7 +184,7 @@ int fcnCalibrateX(){
     Serial.println(lightreading);
     if (lightreading <= 145) { //needs better value
       calibrated = true;
-      tAcurrentDeg = 0;
+      tACcurrentDeg = 0;
     } else {
       myStepper.step(1);
     }
@@ -204,33 +204,33 @@ void tAfcnserialdebug(int deg, int time){
 
 // Function fcnMoveX
 int fcnMoveX(int moveValue) { //should work
-    if (moveValue > 0 && tAcurrentDeg + 15 <= 90) { // if the movemem=nt is clockwise and within the bounds
-    tAfcnserialdebug(tAcurrentDeg, 1);
-    tAcurrentDeg += 15;
+    if (moveValue > 0 && tACcurrentDeg + 15 <= 90) { // if the movemem=nt is clockwise and within the bounds
+    tAfcnserialdebug(tACcurrentDeg, 1);
+    tACcurrentDeg += 15;
     myStepper.step(170);
-    tAfcnserialdebug(tAcurrentDeg, 0);
-    } else if (moveValue > 0 && tAcurrentDeg + 15 > 90){ // if the movement is clockwise and goes outside the bounds
-    tAfcnserialdebug(tAcurrentDeg, 1);
-    int ndeg = 90 - tAcurrentDeg;
+    tAfcnserialdebug(tACcurrentDeg, 0);
+    } else if (moveValue > 0 && tACcurrentDeg + 15 > 90){ // if the movement is clockwise and goes outside the bounds
+    tAfcnserialdebug(tACcurrentDeg, 1);
+    int ndeg = 90 - tACcurrentDeg;
     int steps = ndeg * 5.6889;
     myStepper.step(steps);
-    tAcurrentDeg = 90;
-    tAfcnserialdebug(tAcurrentDeg, 0);
-    } else if (moveValue < 0 && tAcurrentDeg - 15 >= -90) { // if the movement is counterclockwise and within the bounds
-    tAfcnserialdebug(tAcurrentDeg, 1);
-    tAcurrentDeg -= 15;
+    tACcurrentDeg = 90;
+    tAfcnserialdebug(tACcurrentDeg, 0);
+    } else if (moveValue < 0 && tACcurrentDeg - 15 >= -90) { // if the movement is counterclockwise and within the bounds
+    tAfcnserialdebug(tACcurrentDeg, 1);
+    tACcurrentDeg -= 15;
     myStepper.step(-170);
-    tAfcnserialdebug(tAcurrentDeg, 0);
-    } else if (moveValue < 0 && tAcurrentDeg - 15 < -90){ // if the movement is counterclockwise and goes outside the bounds
-    tAfcnserialdebug(tAcurrentDeg, 1);
-    int ndeg = -90 + tAcurrentDeg;
+    tAfcnserialdebug(tACcurrentDeg, 0);
+    } else if (moveValue < 0 && tACcurrentDeg - 15 < -90){ // if the movement is counterclockwise and goes outside the bounds
+    tAfcnserialdebug(tACcurrentDeg, 1);
+    int ndeg = -90 + tACcurrentDeg;
     int steps = ndeg * 5.6889;
     myStepper.step(steps);
-    tAcurrentDeg = -90;
-    tAfcnserialdebug(tAcurrentDeg, 0);
+    tACcurrentDeg = -90;
+    tAfcnserialdebug(tACcurrentDeg, 0);
     }
 
-    return tAcurrentDeg;
+    return tACcurrentDeg;
     
 }
 
@@ -238,12 +238,12 @@ int fcnMoveX(int moveValue) { //should work
 // Function fcnGotoX
 int fcnGotoX(int inDeg) {
 
-  int deg = tAcurrentDeg - inDeg;
+  int deg = tACcurrentDeg - inDeg;
   int moveSteps;
 
-  if (tAcurrentDeg != -1) {
-    if (tAcurrentDeg + deg <= 270){
-      int moveSteps = tAcurrentDeg + deg * (static_cast<float> (tAoutputTeeth) / tAinputTeeth) * (static_cast<float> (stepsPerRevolution) / 360);
+  if (tACcurrentDeg != -1) {
+    if (tACcurrentDeg + deg <= 270){
+      int moveSteps = tACcurrentDeg + deg * (static_cast<float> (tAoutputTeeth) / tAinputTeeth) * (static_cast<float> (stepsPerRevolution) / 360);
       myStepper.step(moveSteps);
     } else {
       int moveSteps = 0;
@@ -259,24 +259,24 @@ int fcnGotoX(int inDeg) {
 // Function tAfcnRecalibrateX
 int tAfcnRecalibrateX (int deg) {
 
-  if (tAcurrentDeg + deg < 0){
-    int fullRote = (tAcurrentDeg + deg)/360 + 360;
-    tAcurrentDeg = (tAcurrentDeg + deg) + fullRote;
-  } else if (tAcurrentDeg + deg > 360) {
-    int fullRote = (tAcurrentDeg + deg)/360;
-    tAcurrentDeg = (tAcurrentDeg + deg) - fullRote;
+  if (tACcurrentDeg + deg < 0){
+    int fullRote = (tACcurrentDeg + deg)/360 + 360;
+    tACcurrentDeg = (tACcurrentDeg + deg) + fullRote;
+  } else if (tACcurrentDeg + deg > 360) {
+    int fullRote = (tACcurrentDeg + deg)/360;
+    tACcurrentDeg = (tACcurrentDeg + deg) - fullRote;
   } else {
-    tAcurrentDeg = tAcurrentDeg;
+    tACcurrentDeg = tACcurrentDeg;
   }
 
-  return tAcurrentDeg;
+  return tACcurrentDeg;
 
 }
 
 // Function fcnReadX
 int fcnReadX() {
 
-  return tAcurrentDeg;
+  return tACcurrentDeg;
 
 }
 
