@@ -42,7 +42,7 @@ const int tArolePerMinute = 17;         // Adjustable range of 28BYJ-48 stepper 
 //--------------------------------
 // Team B Variables/Constants. Names start with tB...
 const int tBpinServo = 6;
-const int tBY_pin = A1;
+const int tBY_pin = A0;
 //Variable that defines the speed of the servo motor in milliseconds per degree
 const float tBServoSpeed = 27.8;
 //--------------------------------
@@ -97,14 +97,17 @@ void loop() {
     break;
     //--------------------------------
     case 1:   //For milliseconds whose last two bits are 0,1
+    Serial.print("_");
+    Serial.print(analogRead(tBY_pin));
+    Serial.print("_");
     if (tTschedulePhase != 1) {   // ensure the team code only gets one execution every 4 milliseconds
       // Team B main code goes here. Tasks to be preformed include the following:
       // Read joystick Y axis and use it to control Servo Motor motion.
-      if ((analogRead(tBY_pin)-tABDeadzone)<512) {
+      if ((analogRead(tBY_pin))<512-tABDeadzone) {
         Serial.print(1);
         fcnMoveY(1);
       }
-      if ((analogRead(tBY_pin)+tABDeadzone)>512) {
+      if ((analogRead(tBY_pin))>512+tABDeadzone) {
         Serial.print(-1);
         fcnMoveY(-1);
       }
@@ -156,22 +159,28 @@ void loop() {
 // Function fcnMoveY (direction 1 = up, and -1 = down)
 int fcnMoveY(int direction) {
   int degrees = 15;
-  if (direction==-1){
-    for (int i = 0; i = degrees; i++) {
+  if (direction<0){
+    for (int i = 0; i < degrees; i++) {
       if (tBCVerticalPos>76 && tBCVerticalPos<180) {
         myservo.write(tBCVerticalPos-1);
         tBCVerticalPos-=1;
         delay(tBServoSpeed);
       }
+      else {
+        break;
+      }
     }
     return int (tBCVerticalPos);
   }
-  else if (direction==1) {
-    for (int i = 0; i = degrees; i++) {
+  else if (direction>=0) {
+    for (int i = 0; i < degrees; i++) {
       if (tBCVerticalPos<180 && tBCVerticalPos>76) {
         myservo.write(tBCVerticalPos+1);
         tBCVerticalPos+=1;
         delay(tBServoSpeed);
+      }
+      else {
+        break;
       }
     }
     return int (tBCVerticalPos);
@@ -184,7 +193,7 @@ int fcnMoveY(int direction) {
 int fcnGotoY(int position) {
   if (position >= 76) {
     if (position <= 180) {
-      for (int i = 0; i = abs((tBCVerticalPos-position)); i++) {
+      for (int i = 0; i < abs((tBCVerticalPos-position)); i++) {
         if ((tBCVerticalPos-position)>0) {
           myservo.write(tBCVerticalPos-1);
           tBCVerticalPos-=1;
@@ -213,7 +222,15 @@ int fcnReadY() {
 // Function fcnReadDist
 int fcnReadDist() {
   int tBCUltraDist=(float(sr04.Distance())/2.54);
-  return (tBCUltraDist);
+  if (tBCUltraDist<0) {
+    return (0);
+  }
+  else if (tBCUltraDist>158) {
+    return (158);
+  }
+  else {
+    return (tBCUltraDist);
+  }
 }
 //--------------------------------
 // Team C's Functions
