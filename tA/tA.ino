@@ -40,7 +40,8 @@ LiquidCrystal lcd(7, 8, 57, 58, 59, 60);  //Set name for the LCD object to "lcd"
 //--------------------------------
 // Team A Variables/Constants. Names start with tA...
 const int tAjoystickX = A0;
-const int tAlightPin = A2;
+const int y = A1;
+const int tAlightPin = 2;
 const int tArolePerMinute = 17;         // Adjustable range of 28BYJ-48 stepper is 0~17 rpm
 int tACdata = 0;
 int tACcurrentDeg = -1;
@@ -71,6 +72,7 @@ void setup() {
   myservo.attach(tBpinServo);           // For Servo Library, identify PWM signal pin
   myStepper.setSpeed(tArolePerMinute);  // For Stepper Motor Library, set rotation speed
   pinMode(tAjoystickX, INPUT);
+  pinMode(y, INPUT);
   Serial.begin(38400);
   pinMode(tAlightPin, INPUT_PULLUP);                // For Serial Monitor (debugging tool) using 38,400 baud
   //--------------------------------
@@ -108,16 +110,13 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
-
-  // fcnMoveX(2);
-  // delay(500);
-
-  // Serial.println(fcnGotoX(45));
-  // delay(500);
-
-  // Serial.println(fcnReadPIR());
-  // digitalWrite(50, HIGH);
-  
+  int tAxPos = analogRead(tAjoystickX);
+  int yPos = analogRead(y);
+  Serial.print(tAxPos);
+  Serial.print(", ");
+  Serial.print(yPos);
+  Serial.print("\n");
+  delay(500);
 
   // Time-based scheduler (Team T)
   switch (millis() & B11) {
@@ -126,11 +125,18 @@ void loop() {
     if (tTschedulePhase != 0) {   // ensure the team code only gets one execution every 4 milliseconds
       // Team A main code goes here. Tasks to be preformed include the following:
       // Read joystick X axis and use it to control Stepper Motor motion. 
-      int tAxPos = analogRead(tAjoystickX);
+      // int tAxPos = analogRead(tAjoystickX);
+      // int yPos = analogRead(y);
+      // Serial.print(tAxPos);
+      // Serial.print(", ");
+      // Serial.print(y);
+      // Serial.print("\n");
       
       // Pass arm's horizontal position to Team C in an inter-team global variable
       // Read PIR sensors and pass to Team C in an inter-team global variable
       // DEBUG
+      fcnReadX();
+      fcnReadPIR();
       tTschedulePhase = 0;
     }
     break;
@@ -182,7 +188,7 @@ int fcnCalibrateX(){
   bool calibrated = false;
   while (calibrated != true) {
     int lightreading = analogRead(tAlightPin);
-    Serial.println(lightreading);
+    // Serial.println(lightreading);
     if (lightreading <= 145) { //needs better value
       calibrated = true;
       tACcurrentDeg = 0;
@@ -193,7 +199,7 @@ int fcnCalibrateX(){
 return calibrated;
 
 }
-void tAfcnserialdebug(int deg, int time){
+void tAfcnSerialDebug(int deg, int time){
   if (time == 1){
     Serial.println("Current X Position:");
     Serial.println(deg);
@@ -206,29 +212,29 @@ void tAfcnserialdebug(int deg, int time){
 // Function fcnMoveX
 int fcnMoveX(int moveValue) { //should work
     if (moveValue > 0 && tACcurrentDeg + 15 <= 90) { // if the movemem=nt is clockwise and within the bounds
-    tAfcnserialdebug(tACcurrentDeg, 1);
+    // tAfcnserialdebug(tACcurrentDeg, 1);
     tACcurrentDeg += 15;
     myStepper.step(170);
-    tAfcnserialdebug(tACcurrentDeg, 0);
+    // tAfcnserialdebug(tACcurrentDeg, 0);
     } else if (moveValue > 0 && tACcurrentDeg + 15 > 90){ // if the movement is clockwise and goes outside the bounds
-    tAfcnserialdebug(tACcurrentDeg, 1);
+    // tAfcnserialdebug(tACcurrentDeg, 1);
     int ndeg = 90 - tACcurrentDeg;
     int steps = ndeg * 5.6889;
     myStepper.step(steps);
     tACcurrentDeg = 90;
-    tAfcnserialdebug(tACcurrentDeg, 0);
+    // tAfcnserialdebug(tACcurrentDeg, 0);
     } else if (moveValue < 0 && tACcurrentDeg - 15 >= -90) { // if the movement is counterclockwise and within the bounds
-    tAfcnserialdebug(tACcurrentDeg, 1);
+    // tAfcnserialdebug(tACcurrentDeg, 1);
     tACcurrentDeg -= 15;
     myStepper.step(-170);
-    tAfcnserialdebug(tACcurrentDeg, 0);
+    // tAfcnserialdebug(tACcurrentDeg, 0);
     } else if (moveValue < 0 && tACcurrentDeg - 15 < -90){ // if the movement is counterclockwise and goes outside the bounds
-    tAfcnserialdebug(tACcurrentDeg, 1);
+    // tAfcnserialdebug(tACcurrentDeg, 1);
     int ndeg = -90 + tACcurrentDeg;
     int steps = ndeg * 5.6889;
     myStepper.step(steps);
     tACcurrentDeg = -90;
-    tAfcnserialdebug(tACcurrentDeg, 0);
+    // tAfcnserialdebug(tACcurrentDeg, 0);
     }
 
     return tACcurrentDeg;
@@ -283,25 +289,25 @@ int fcnReadX() {
 
 // Function fcnReadPIR
 byte fcnReadPIR() {
-  int ne = digitalRead(tAPIRNE);
-  int nw = digitalRead(tAPIRNW);
-  int sw = digitalRead(tAPIRSW);
-  int se = digitalRead(tAPIRSE);
+  bool ne = digitalRead(tAPIRNE);
+  bool nw = digitalRead(tAPIRNW);
+  bool sw = digitalRead(tAPIRSW);
+  bool se = digitalRead(tAPIRSE);
 
   if (ne == HIGH) {
-    tACdata += 2;
+    tACdata += 0;
   }
 
   if (nw == HIGH) {
-    tACdata += 4;
+    tACdata += 2;
   }
   
   if (sw == HIGH) {
-    tACdata += 8;
+    tACdata += 4;
   }
   
   if (se == HIGH) {
-    tACdata += 16;
+    tACdata += 8;
   }
 
   return tACdata;
